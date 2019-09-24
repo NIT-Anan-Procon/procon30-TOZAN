@@ -1,5 +1,4 @@
-# Tozan_procon30
-for source list
+# TOZAN Source code List 
 
-# ステッパーの歩数カウント,ボタン検出用
-　Arduino Leonardo
+### ステッパーの歩数カウント,ボタン検出用
+ Arduino Leonardo
