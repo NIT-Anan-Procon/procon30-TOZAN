@@ -1,0 +1,176 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TOZAN_Client"
+      xmlns:PropertyEditing="clr-namespace:System.Activities.Presentation.PropertyEditing;assembly=System.Activities.Presentation" x:Name="editPage" x:Class="TOZAN_Client.EditPage"
+      xmlns:wpf="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1080"
+      Title="EditPage" Background="White" Loaded="EditPage_Loaded">
+
+    <Grid>
+        <Grid x:Name="MapBase">
+            <wpf:Map x:Name="EditPageMap" CredentialsProvider="9AvuYVb80hrtitITxIKU~y2Jdchn67Nbt0-AdHttcmQ~ArRmIqQoxvqB_QVMg20wORDVRYnhUk8qc_E88WH_K344DbElOKPQidFLd8w35lYf">
+            </wpf:Map>
+        </Grid>
+        <Grid x:Name="MenuBarOverlay" Height="64" VerticalAlignment="Top">
+            <Border x:Name="MenuBar" Margin="0,0,0,5" BorderBrush="DarkGray" BorderThickness="0,0,0,1" Background="White">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="BackButton" Width="48" Height="48" Margin="10,0,0,0" Style="{StaticResource NavMenuButton}" Click="BackButton_Click">
+                        <Viewbox Height="32" Width="32">
+                            <Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" SnapsToDevicePixels="True">
+                                <Path Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" Fill="DimGray"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                    <RadioButton x:Name="InfoButton" Click="InfoButton_Click" Height="59" Width="150" Style="{StaticResource MenuButton}" Background="Transparent" Margin="10,0,0,0" VerticalAlignment="Center" SnapsToDevicePixels="True">
+                        <TextBlock x:Name="InfoButtonText" Text="山の情報" FontFamily="{DynamicResource SpicaNeueP-Bold}" FontSize="16" Margin="0,5,0,0" Foreground="DimGray"/>
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="RadioButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SlideInfoMenuAnimation" Storyboard.TargetProperty="(TranslateTransform.X)">
+                                            <EasingDoubleKeyFrame Value="0" KeyTime="00:00:0.2">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="RadioButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SlideInfoMenuAnimation" Storyboard.TargetProperty="(TranslateTransform.X)">
+                                            <EasingDoubleKeyFrame Value="-600" KeyTime="00:00:0.2">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                    <RadioButton x:Name="AddButton" Height="59" Width="150" Style="{StaticResource MenuButton}" Background="Transparent" Margin="0,0,0,0" VerticalAlignment="Center" SnapsToDevicePixels="True">
+                        <TextBlock x:Name="AddButtonText" Text="項目の追加" FontFamily="{DynamicResource SpicaNeueP-Bold}" FontSize="16" Margin="0,5,0,0" Foreground="DimGray"/>
+                        <RadioButton.Triggers>
+                            <EventTrigger RoutedEvent="RadioButton.Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SlideAddMenuAnimation" Storyboard.TargetProperty="(TranslateTransform.X)">
+                                            <EasingDoubleKeyFrame Value="0" KeyTime="00:00:0.2">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="RadioButton.Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="SlideAddMenuAnimation" Storyboard.TargetProperty="(TranslateTransform.X)">
+                                            <EasingDoubleKeyFrame Value="-600" KeyTime="00:00:0.2">
+                                                <EasingDoubleKeyFrame.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </EasingDoubleKeyFrame.EasingFunction>
+                                            </EasingDoubleKeyFrame>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </RadioButton.Triggers>
+                    </RadioButton>
+                    <RadioButton x:Name="PreviewButton" Height="59" Width="150" Style="{StaticResource MenuButton}" Background="Transparent" Margin="0,0,0,0" VerticalAlignment="Center" SnapsToDevicePixels="True">
+                        <TextBlock x:Name="PreviewButtonText" Text="マップのプレビュー" FontFamily="{DynamicResource SpicaNeueP-Bold}" FontSize="16" Margin="0,5,0,0" Foreground="DimGray"/>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid x:Name="MenuBase" Width="540" HorizontalAlignment="Left" Margin="0,64,0,0">
+            <Border x:Name="InfoMenu" CornerRadius="1" BorderBrush="DarkGray" BorderThickness="1" Margin="15,10,10,15" Background="White">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="SlideInfoMenuAnimation" X="-600"/>
+                </Border.RenderTransform>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+                <Grid>
+                    <TextBlock x:Name="mountain" HorizontalAlignment="Left" Margin="50,50,0,0" TextWrapping="Wrap" Text="山の名前" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="32"/>
+                    <TextBlock x:Name="mount" HorizontalAlignment="Left" Margin="195,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="32"/>
+                    <TextBlock x:Name="Tozan_id" HorizontalAlignment="Left" Margin="50,90,0,0" TextWrapping="Wrap" Text="TOZAN ID:" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="16" Foreground="Gray"/>
+                    <TextBlock x:Name="id" HorizontalAlignment="Left" Margin="140,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="16" Foreground="Gray"/>
+                    
+                    <TextBlock x:Name="m_height" HorizontalAlignment="Left" Margin="50,140,0,0" TextWrapping="Wrap" Text="標高 :" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                    <TextBlock x:Name="height" HorizontalAlignment="Left" Margin="93,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                    <TextBox x:Name="height_text" HorizontalAlignment="Left" Margin="150,136.5,0,0" Width="260" Height="20"  TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="14"
+                             BorderBrush="DimGray" VerticalContentAlignment="Center" ToolTip="標高をmまで入力してください。" />
+                    
+                    <TextBlock x:Name="m_route" HorizontalAlignment="Left" Margin="50,175,0,0" TextWrapping="Wrap" Text="総ルート距離 :" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                    <TextBlock x:Name="route" HorizontalAlignment="Left" Margin="152,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                    <TextBox x:Name="route_text" HorizontalAlignment="Left" Margin="150,172.5,0,0" Width="260" Height="20" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="14"
+                             BorderBrush="DimGray" VerticalContentAlignment="Center" ToolTip="歩行距離をmまで入力してください" />
+                    
+                    <TextBlock x:Name="m_description" HorizontalAlignment="Left" Margin="50,210,0,0" TextWrapping="Wrap" Text="山の説明" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                    <ScrollViewer HorizontalAlignment="Left" Margin="50,235.5,0,0" Width="413" Height="300" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" >
+                        <Grid>
+                            <Border BorderBrush="DimGray" BorderThickness="1" >
+                                <TextBlock x:Name="description" HorizontalAlignment="Left" Margin="3" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"/>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                    <TextBox x:Name="description_text" HorizontalAlignment="Left" Margin="50,235.5,0,0" Width="413" Height="300" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="{StaticResource SpicaNeueP-Regular}" FontSize="16"
+                             AcceptsReturn="True"  BorderBrush="DimGray" ToolTip="山の説明を入力してください。" />
+
+                    <Button x:Name="preview_pic_add" Content="プレビュー画像の追加" FontFamily="{StaticResource SpicaNeueP-Regular}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="135" Margin="50,0,0,12.5" Style="{StaticResource NavigationButton}" Click="Preview_pic_add_Click"  Background="Transparent" FontSize="13" ToolTip="プレビュー画像を追加します。" />
+                    <Button x:Name="info_edit" Content="情報の編集" FontFamily="{StaticResource SpicaNeueP-Regular}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="30" Width="90" Margin="0,0,155,12.5"  Style="{StaticResource NavigationButton}" Click="Info_edit_Click" Background="Transparent" FontSize="13" ToolTip="クリックすると山データの編集が行えます。" />
+                    <Button x:Name="info_update" Content="情報の更新" FontFamily="{StaticResource SpicaNeueP-Regular}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="30" Width="90" Margin="0,0,50,12.5" Style="{StaticResource NavigationButton}" Click="Info_update_Click" Background="Transparent" FontSize="13" ToolTip="クリックすると山データの更新が行えます。" />
+                </Grid>
+            </Border>
+            <Border x:Name="AddMenu" CornerRadius="1" BorderBrush="DarkGray" BorderThickness="1" Margin="15,10,10,15" Background="White">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="SlideAddMenuAnimation" X="-600"/>
+                </Border.RenderTransform>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="0" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+                <Grid>
+                    <Border Width="400" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" BorderBrush="DimGray" BorderThickness="1" CornerRadius="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton Grid.Column="0" x:Name="zekkei_tab" Checked="Zekkei_tab_Checked" Style="{StaticResource TabButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="201">
+                                <Grid>
+                                    <TextBlock x:Name="zekkei_text" Text="絶景" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="14" SnapsToDevicePixels="True" Margin="0,3,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="DimGray"/>
+                                </Grid>
+                            </RadioButton>
+                            <RadioButton x:Name="ad_tab" Grid.Column="1" Checked="Ad_tab_Checked" Style="{StaticResource TabButton}" Height="30" Width="200" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <TextBlock x:Name="ad_text" Text="広告" FontFamily="{StaticResource SpicaNeueP-Bold}" FontSize="14" SnapsToDevicePixels="True" Margin="0,3,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="DimGray"/>
+                                </Grid>
+                            </RadioButton>
+                        </Grid>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="0" CornerRadius="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="30" Width="100" Margin="0,0,50,10" >
+                        <Button x:Name="Add_Picture" Content="写真の追加" FontFamily="{StaticResource SpicaNeueP-Regular}" Style="{StaticResource NavigationButton}" Click="Add_Picture_Click" Background="Transparent" FontSize="13" />
+                    </Border>
+                    <ScrollViewer Height="500" Margin="30,70" VerticalAlignment="Top" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" >
+                        <WrapPanel x:Name="EditListView" VerticalAlignment="Top" Orientation="Horizontal" SnapsToDevicePixels="True"  
+                                   ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="495" />
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,65 @@
+﻿<Window x:Class="TOZAN_Client.PropertyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TOZAN_Client"
+        mc:Ignorable="d"
+        Title="[NAME]のプロパティ" Height="450" Width="450" ResizeMode="NoResize" Background="WhiteSmoke">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TabControl Margin="7.5" Grid.Row="0">
+            <TabItem Header="全般">
+                <StackPanel Background="White" Orientation="Vertical">
+                    <GroupBox Header="概要" Height="auto" Margin="5,5,5,0" VerticalAlignment="Top">
+                        <Grid>
+                            <StackPanel Margin="10">
+                                <TextBlock Text="山の名前:" />
+                                <TextBlock Text="場所:" Margin="0,10,0,0"/>
+                                <TextBlock Text="TOZAN ID:" Margin="0,10,0,0"/>
+                                <TextBlock Text="リソースの場所:" Margin="0,10,0,0"/>
+                                <TextBlock Text="ファイル サイズ:" Margin="0,10,0,0"/>
+                            </StackPanel>
+                            <StackPanel Margin="10">
+                                <TextBlock Text="NAME" Margin="150,0,0,0"/>
+                                <TextBlock Text="LOCATION" Margin="150,10,0,0"/>
+                                <TextBlock Text="ID" Margin="150,10,0,0"/>
+                                <TextBlock Text="DIRECTORY" Margin="150,10,0,0"/>
+                                <TextBlock Text="FILE SIZE" Margin="150,10,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="管理" Margin="5,5,5,10">
+                        <Grid Margin="10,0">
+                            <Grid Margin="0,5" VerticalAlignment="Top">
+                                <TextBlock Text="ダウンロードした山データを修復します。" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <Button x:Name="FixButton" Content="修復(_F)" Width="100" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Grid>
+                            <TextBlock Text="ステータス: " Foreground="Gray" Margin="0,35,0,0"/>
+                            <TextBlock x:Name="StatusText" Margin="0,35,0,0"/>
+                            <ProgressBar VerticalAlignment="Bottom" Height="10" Margin="0,55,0,10" SnapsToDevicePixels="True"/>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="構造">
+                <Grid>
+                    <GroupBox Header="ファイル構造" Margin="5">
+                        <TreeView Margin="5">
+                            <TreeViewItem x:Name="ItemID" Header="ID">
+                                <TreeViewItem Header="Child"/>
+                            </TreeViewItem>
+                        </TreeView>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="5,0">
+            <Button x:Name="CancelButton" Height="25" Width="85" Content="キャンセル" VerticalAlignment="Top" Margin="5" FlowDirection="LeftToRight" Click="CancelButton_Click"/>
+            <Button x:Name="OkButton" Height="25" Width="85" Content="OK" VerticalAlignment="Top" Margin="5" FlowDirection="LeftToRight" Click="OkButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
