@@ -1,6 +1,6 @@
 # TOZAN Source code List 
 
-#### ステッパーの歩数カウント,ボタン検出用
+#### ステッパーの歩数カウント,ボタン検出用（USB接続でWindows PCに接続）
  -  Arduino Leonardo
-#### ゲーム , 編集用アプリ
+#### TOZANゲーム,及び編集用WindowsApp
  -  TOZAN-Client
