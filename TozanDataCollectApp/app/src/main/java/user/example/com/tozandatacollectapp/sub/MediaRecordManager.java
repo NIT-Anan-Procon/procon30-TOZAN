@@ -1,44 +1,39 @@
 package user.example.com.tozandatacollectapp.sub;
 
-import android.content.Context;
 import android.media.MediaRecorder;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 
-import user.example.com.tozandatacollectapp.R;
-
 public class MediaRecordManager {
 
     private final String TAG = getClass().getSimpleName();
 
     private MediaRecorder rec;
-    private String appName;
     private Thread thread;
-    private TozanDataInfo tozanDataInfo;
+
+    private MountainData mountainData;
+    private String dataStoragePath;
 
     private boolean isRecording = false;
     private int sourceDuration;
     private long time;
 
-    public MediaRecordManager(Context context, int sourceDuration, TozanDataInfo tozanDataInfo){
-        appName = context.getString(R.string.app_name);
+    public MediaRecordManager(int sourceDuration, String dataStoragePath, MountainData mountainData){
         if(sourceDuration < 0) throw new IllegalArgumentException("指定する出力ファイルの再生時間が負の値です。(sourceDuration = " + sourceDuration + ")");
         this.sourceDuration = sourceDuration;
-        this.tozanDataInfo = tozanDataInfo;
+        this.mountainData = mountainData;
+        this.dataStoragePath = dataStoragePath;
     }
 
     private void startRecord() {
 
-        File storageDir = new File(tozanDataInfo.getDataPath());
-        if(!storageDir.exists()){
-            storageDir = new File(tozanDataInfo.getIntStorage());
-        }
+        File storageDir = new File(dataStoragePath);
 
         File dir = new File(
                 storageDir.getAbsolutePath(),
-                tozanDataInfo.getDataName() + "/resources/sounds"
+                mountainData.getmId() + "/resources/sounds"
         );
 
         if(!dir.exists())

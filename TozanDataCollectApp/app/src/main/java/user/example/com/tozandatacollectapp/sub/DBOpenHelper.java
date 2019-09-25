@@ -338,7 +338,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         return value;
     }
 
-
     public List<MountainData> getMountainsFromIdStr(List<String> idList) {
 
         SQLiteDatabase db = getReadableDatabase();
@@ -366,13 +365,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         return value;
     }
 
-    public List<MountainData> getMountainsFromId(List<Integer> idList) {
+    public MountainData getMountainFromIdStr(String mountainID) {
         SQLiteDatabase db = getReadableDatabase();
 
-        List<MountainData> value = new ArrayList<>();
+        MountainData mountainData = null;
 
-        for(Integer id : idList){
-            Cursor cursor = db.rawQuery(String.format(SQL_FIND_MOUNTAIN_FROM_ID, id+""), null);
+        if(isNum(mountainID)){
+            Cursor cursor = db.rawQuery(String.format(SQL_FIND_MOUNTAIN_FROM_ID, mountainID), null);
             cursor.moveToFirst();
             int cId, pId, mId;
             String cName, pName, mName;
@@ -383,12 +382,23 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 pName = cursor.getString(3);
                 mId = cursor.getInt(4);
                 mName = cursor.getString(5);
-                value.add(new MountainData(cId, cName, pId, pName, mId, mName));
+                mountainData = new MountainData(cId, cName, pId, pName, mId, mName);
                 cursor.moveToNext();
             }
         }
+        return mountainData;
+    }
 
-        return value;
+    public List<MountainData> getMountainsFromId(List<Integer> idList) {
+
+        List<String> strIdList = new ArrayList<>();
+
+        for(Integer i : idList){
+            strIdList.add(Integer.toString(i));
+        }
+
+        return getMountainsFromIdStr(strIdList);
+
     }
 
         public boolean isNum(String str){
@@ -420,4 +430,5 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
         return value;
     }
+
 }

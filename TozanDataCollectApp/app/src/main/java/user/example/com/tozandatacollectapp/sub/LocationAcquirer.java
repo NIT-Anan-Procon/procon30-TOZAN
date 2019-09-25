@@ -3,6 +3,7 @@ package user.example.com.tozandatacollectapp.sub;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
@@ -14,30 +15,29 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import user.example.com.tozandatacollectapp.R;
+
 import static android.content.Context.LOCATION_SERVICE;
 
 public final class LocationAcquirer extends LocationCallback{
 
-    public LocationAcquirer(Context context, OnLocationResultListener mListener){
-        this.mListener = mListener;
-        this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
-        this.context = context;
-        //initLocationManager(context);
+    public interface OnLocationChangeListener {
+        void locationChanged(Location location);
     }
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private OnLocationChangeListener onLocationResultListener;
 
     private final String TAG = getClass().getSimpleName();
     private Context context;
 
-    /**
-     * Exif形式にGPS Locationを変換して返す。
-     * longitudeRef => W or E
-     * latitudeRef => N or S
-     * latitude and longitude => num1/denom1,num2/denom2,num3/denom3
-     * ex) 12/1,34/1,56789/1000
-     *
-     * @param location
-     * @return ExifLocation
-     */
+    public LocationAcquirer(Context context, OnLocationChangeListener onLocationResultListener){
+        this.onLocationResultListener = onLocationResultListener;
+        this.fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+        this.context = context;
+    }
+
+    //Exif形式にGPS Locationを変換して返す。
     public static ExifLocation encodeGpsToExifFormat(Location location) {
         ExifLocation exifLocation = new ExifLocation();
         // 経度の変換(正->東, 負->西)
@@ -59,7 +59,7 @@ public final class LocationAcquirer extends LocationCallback{
         } else {
             int digit = lonDMS[2].substring(index + 1).length();
             int second = (int) (Double.parseDouble(lonDMS[2]) * Math.pow(10, digit));
-            lon.append(String.valueOf(second));
+            lon.append(second);
             lon.append("/1");
             for (int i = 0; i < digit; i++) {
                 lon.append("0");
@@ -86,7 +86,7 @@ public final class LocationAcquirer extends LocationCallback{
         } else {
             int digit = latDMS[2].substring(index + 1).length();
             int second = (int) (Double.parseDouble(latDMS[2]) * Math.pow(10, digit));
-            lat.append(String.valueOf(second));
+            lat.append(second);
             lat.append("/1");
             for (int i = 0; i < digit; i++) {
                 lat.append("0");
@@ -95,21 +95,6 @@ public final class LocationAcquirer extends LocationCallback{
         exifLocation.latitude = lat.toString();
 
         return exifLocation;
-    }
-
-    private static final int LOCATION_REQUEST_CODE = 1;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private OnLocationResultListener mListener;
-
-    public interface OnLocationResultListener {
-        void onLocationResult(LocationResult locationResult);
-        void lastLocation(Location location);
-    }
-
-    @Override
-    public void onLocationResult(LocationResult locationResult) {
-        super.onLocationResult(locationResult);
-        mListener.onLocationResult(locationResult);
     }
 
     @SuppressLint("MissingPermission")
@@ -121,28 +106,41 @@ public final class LocationAcquirer extends LocationCallback{
             return;
         }
 
+        //位置情報の取得の仕方を設定
         LocationRequest request = new LocationRequest();
-        request.setInterval(5 * 60 * 1000);
-        request.setFastestInterval(10 * 1000);
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setInterval(60 * 1000); //大体1分に
+        request.setFastestInterval(10 * 1000); //速くて10秒ごとに
+        request.setSmallestDisplacement(20); //早くて20ｍごとに
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //高精度で
 
-        if(mListener != null)
+        if(onLocationResultListener != null) {
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
-                    mListener.lastLocation(task.getResult());
+                    onLocationResultListener.locationChanged(task.getResult());
                 }
             });
+        }
 
+        //取得開始
         fusedLocationProviderClient.requestLocationUpdates(request, this,null);
     }
 
+    @Override
+    public void onLocationResult(LocationResult locationResult) {
+        super.onLocationResult(locationResult);
+        //
+        onLocationResultListener.locationChanged(locationResult.getLastLocation());
+    }
+
+    //位置情報の取得を停止
     public void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(this);
     }
 
+    //位置情報機能がオンになっているか
     private Boolean isGPSEnabled() {
-        android.location.LocationManager locationManager = (android.location.LocationManager) context.getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (android.location.LocationManager) context.getSystemService(LOCATION_SERVICE);
         return locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
     }
 
@@ -164,6 +162,6 @@ public final class LocationAcquirer extends LocationCallback{
                 })
                 .create()
                 .show();*/
-        Toast.makeText(context, "設定画面で位置情報サービスを有効にしてください", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, context.getString(R.string.request_location_enable), Toast.LENGTH_LONG).show();
     }
 }
