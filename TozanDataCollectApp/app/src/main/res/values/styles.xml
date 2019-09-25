@@ -1,0 +1,79 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:theme">?attr/actionBarTheme</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <color name="image_tint_dark">#a0404040</color>
+    <style name="ImageView.Tint" parent="ThemeOverlay.AppCompat">
+        <item name="android:tintMode">src_atop</item>
+        <item name="android:tint">@color/image_tint_dark</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="LinearLayout.Default" parent="ThemeOverlay.AppCompat">
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@drawable/spacer</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="TextView.Default" parent="ThemeOverlay.AppCompat">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorTextLight</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:drawableTint">@color/colorTextLight</item>
+    </style>
+
+
+    <style name="TextView.Small" parent="TextView.Default">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Button.Default" parent="TextView.Default">
+        <item name="android:elevation">2dp</item>
+        <item name="android:stateListAnimator">@animator/animation_press</item>
+    </style>
+
+    <style name="Button.Basic" parent="Button.Default">
+        <item name="android:backgroundTint">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Button.Basic.Accent" parent="Button.Basic">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="Button.Text" parent="Button.Default">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="Button.Text.Accent" parent="Button.Text">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="Button.FAB" parent="Button.Default">
+        <item name="android:backgroundTint">@color/colorAccent</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/button_floating</item>
+        <item name="android:elevation">6dp</item>
+    </style>
+
+    <style name="Card" parent="ThemeOverlay.AppCompat">
+        <item name="android:elevation">2dp</item>
+        <item name="android:stateListAnimator">@animator/animation_press</item>
+    </style>
+
+</resources>

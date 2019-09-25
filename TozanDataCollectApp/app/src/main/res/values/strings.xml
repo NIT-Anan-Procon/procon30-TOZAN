@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">TOZAN記録アプリ</string>
+
+    <string name="preftitle_storage">ストレージ設定</string>
+    <string name="prefsummary_storage">端末のどこにデータを保存するか設定します。\n%s</string>
+    <string name="setting">設定</string>
+    <string name="confirm">決定</string>
+    <string name="make_new_data">新規作成</string>
+    <string name="title_dialog_choose_data">山データを選択</string>
+    <string name="title_dialog_choose_mountain">山を選択</string>
+    <string name="select_category">地域を選択</string>
+    <string name="select_prefecture">都道府県を選択</string>
+    <string name="select_mountain">山を選択</string>
+    <string name="update_data">山データを\n更新しています</string>
+    <string name="ok">OK</string>
+
+    <string name="categories">d/e/2PACX-1vSAUxHYEKrvwPGbC1ZawCToASCbOQBoqO2aPWXroxDLmUPHgXt3T_vCncjPdBPZoztS4On_bIU_zCGn</string>
+    <string name="prefectures">d/e/2PACX-1vTle8KPisHdXwJjKWJRopRU-SNKeCmKNGJ0NErAaO4F9sqKxYo901AddqxfPWI0U0ViawXf-3-eq7X1</string>
+    <string name="mountains">d/e/2PACX-1vSxtTt43U-oxy2XdUe-7ybYuECzVSKokP_GoMaDeK3gvDuurT3szkssgYw1b4E6OwTghc9xElPNsrhu</string>
+    <string name="data_update_bad_connection">通信に失敗しました。 \nネットワークの接続状況を確認してください。</string>
+    <string name="title_dialog_update">山データを更新中</string>
+    <string name="data_not_found_create_new">山データが見つかりませんでした。 \n新しい山データを作成してください。</string>
+    <string name="item_selected">選択中：%s</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="page_upload">http://10.40.22.216/Tozan-Server/html-scripts/file_up.php</string>
+    <string name="tozan">TOZAN</string>
+    <string name="data_created">作成済みの山データ</string>
+    <string name="data_not_created">未作成の山データ</string>
+    <string name="update_success">データ更新成功</string>
+    <string name="manage_data">登山データを管理</string>
+    <string name="add_image">絶景の追加</string>
+    <string name="add_tozan_data">登山記録の追加</string>
+    <string name="choose_image">絶景を選択</string>
+    <string name="menu">メニュー</string>
+    <string name="post_data">データを送信</string>
+    <string name="start_record">記録を開始</string>
+    <string name="recording">記録中…</string>
+    <string name="delete_data">データを削除</string>
+    <string name="none_created_data">作成済みのデータはありません</string>
+    <string name="data_not_found">山データが見つかりませんでした</string>
+    <string name="permission_check">山のデータを取得するために次の権限を許可してください</string>
+    <string name="permit">許可する</string>
+
+</resources>
