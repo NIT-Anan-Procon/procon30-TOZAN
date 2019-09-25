@@ -1,0 +1,36 @@
+body {
+    background-color: #FFFFFF;
+    text-align: center;
+  position: absolute; /* 絶対指定 */
+  top: 50%;  /* 上の要素を中央配置 */
+  left: 50%; /* 左右の要素を中央配置 */
+  width: 800px;
+  height: 400px;
+  margin: -200px 0 0 -400px; /* 幅、高さの半分をマイナス指定 */
+}
+
+.btn-flat-border {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #00BCD4;
+    background: #525252;
+    transition: .4s;
+    font-size: 32px;
+    border-bottom: solid 4px #627295;
+    border-radius: 3px;
+    margin: 20px;
+}
+
+.btn-flat-border:hover {
+    background: #727272;
+    color: white;
+    border-bottom: none;
+}
+
+.page_title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 72px;
+}
