@@ -30,25 +30,28 @@ public class PreferenceFragment extends PreferenceFragmentCompat{
         data = PreferenceManager.getDefaultSharedPreferences(getActivity());
         getStoragePrefValue();
 
+        //ダミーのEditTextPreference、文字は入力しない
         storagePreference = new EditTextPreference(getActivity());
         storagePreference.setTitle(R.string.preftitle_storage);
         storagePreference.setKey(getString(R.string.key_storage));
+        //内部ストレージをデフォルトに設定
         storagePreference.setDefaultValue(storageAcquirer.getInternalStorageList().get(0));
+        //表示を更新
         onStoragePrefChanged(storagePath);
-
+        //設定を表示
         getPreferenceScreen().addPreference(storagePreference);
-
-        storageAcquirer = StorageAcquirer.getInstance();
 
     }
 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
-        if (getFragmentManager().findFragmentByTag(PREF_DIALOG_TAG) != null) {
-            return;
-        }
 
+        //キーがストレージ設定のものなら
         if (preference.getKey().equals(getString(R.string.key_storage))) {
+            //すでにダイアログが表示されているなら終了
+            if (getFragmentManager().findFragmentByTag(PREF_DIALOG_TAG) != null) {
+                return;
+            }
             DialogFragment dialogFragment = StoragePrefDialogFragment.newInstance();
             dialogFragment.show(getFragmentManager(), PREF_DIALOG_TAG);
         } else {

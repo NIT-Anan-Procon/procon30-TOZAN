@@ -10,19 +10,24 @@ import user.example.com.tozandatacollectapp.Dialog.StoragePrefDialogFragment;
 public class PreferenceActivity extends AppCompatActivity implements StoragePrefDialogFragment.OnConfirmListener {
 
     private PreferenceFragment prefFragment;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
+        //画面に設定フラグメントを表示
         prefFragment = new PreferenceFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.replacement, prefFragment).commit();
+
+        //ツールバーを初期化
         initToolbar();
     }
 
     public void initToolbar(){
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        //戻るボタンを表示
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -34,6 +39,7 @@ public class PreferenceActivity extends AppCompatActivity implements StoragePref
 
         switch (id){
             case android.R.id.home:
+                //戻るボタンで終了
                 finish();
                 break;
             default:
@@ -43,6 +49,7 @@ public class PreferenceActivity extends AppCompatActivity implements StoragePref
         return result;
     }
 
+    //ストレージ設定ダイアログの結果が決まった
     @Override
     public void onConfirm(String value) {
         prefFragment.onStoragePrefChanged(value);

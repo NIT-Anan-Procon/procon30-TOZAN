@@ -1,9 +1,7 @@
 package user.example.com.tozandatacollectapp;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +33,7 @@ public class TitleActivity extends AppCompatActivity{
     private StorageAcquirer storageAcquirer;
     private String storagePath;
 
-    //データ取得中か
+    //データ記録中か
     private boolean isAcquiring;
 
     private Button post, setting;
@@ -56,14 +54,17 @@ public class TitleActivity extends AppCompatActivity{
         //発生したエラーを処理するやつ
         setExceptionHandler(data);
 
-        //プリファレンスに保存されているストレージ設定を読み込む
+        //ストレージ設定を読み込む
         storagePath = data.getString(getString(R.string.key_storage), null);
 
-        //未設定の時、内部ストレージに設定
+        //未設定の場合、内部ストレージに設定
         if(storagePath == null){
             storagePath = storageAcquirer.getInternalStorageList().get(0);
             data.edit().putString(getString(R.string.key_storage), storagePath).apply();
         }
+
+        //データを記録中かを取得
+        isAcquiring = data.getBoolean(getString(R.string.key_acquiring), false);
 
         post = findViewById(R.id.postData);
         setting = findViewById(R.id.setting);
@@ -75,32 +76,10 @@ public class TitleActivity extends AppCompatActivity{
                 //ストレージ設定を再取得
                 storagePath = data.getString(getString(R.string.key_storage), null);
 
-                //データ取得中かつデータ取得サービスが起動されているか
-                if(isAcquiring && isServiceRunning()){
-
-                    //保存されていたデータ取得中の山IDを取得
-                    String id = data.getString(getString(R.string.key_name), null);
-
-                    //データ取得画面を起動
-                    startActivity(
-                            new Intent(
-                                    TitleActivity.this,
-                                    DataAcquisitionActivity.class
-                            ).putExtra(
-                                    EXTRA_MOUNTAIN_ID,
-                                    id
-                            ).putExtra(
-                                    EXTRA_DATAPATH,
-                                    storagePath
-                            ).putExtra(
-                                    EXTRA_ACQUIRING,
-                                    isAcquiring
-                            )
-                    );
-                }else{
-                    //データ管理画面を取得
-                    startActivity(new Intent(TitleActivity.this, BrowseActivity.class).putExtra(EXTRA_DATAPATH, storagePath));
-                }
+                //データ管理画面を起動
+                startActivity(new Intent(TitleActivity.this, BrowseActivity.class)
+                        .putExtra(EXTRA_DATAPATH, storagePath)
+                        .putExtra(EXTRA_ACQUIRING, isAcquiring));
 
             }
         });
@@ -108,7 +87,7 @@ public class TitleActivity extends AppCompatActivity{
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //設定画面を取得
+                //設定画面を起動
                 startActivity(new Intent(TitleActivity.this, PreferenceActivity.class));
             }
         });
@@ -119,7 +98,7 @@ public class TitleActivity extends AppCompatActivity{
         //ツールバー初期化
         initToolbar();
 
-        //パーミッションを取得
+        //権限の許可を要求
         ActivityCompat.requestPermissions(TitleActivity.this, new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -130,17 +109,6 @@ public class TitleActivity extends AppCompatActivity{
                         Manifest.permission.RECORD_AUDIO},
                 REQUEST_CODE);
 
-    }
-
-    //サービスが動いているか
-    public boolean isServiceRunning(){
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (DataAcquisitionService.class.getName().equals(serviceInfo.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     //ツールバーを初期化

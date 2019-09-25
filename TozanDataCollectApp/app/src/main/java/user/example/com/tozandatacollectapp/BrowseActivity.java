@@ -1,9 +1,12 @@
 package user.example.com.tozandatacollectapp;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,10 +31,13 @@ import user.example.com.tozandatacollectapp.Recyclerview.SimpleMountainBrowseAda
 import user.example.com.tozandatacollectapp.sub.DBOpenHelper;
 import user.example.com.tozandatacollectapp.sub.FileDeleter;
 import user.example.com.tozandatacollectapp.sub.MountainData;
-import user.example.com.tozandatacollectapp.sub.StorageAcquirer;
+
+import static user.example.com.tozandatacollectapp.TitleActivity.EXTRA_ACQUIRING;
+import static user.example.com.tozandatacollectapp.TitleActivity.EXTRA_DATAPATH;
 
 public class BrowseActivity extends AppCompatActivity implements ListDialogFragment.ItemClickListener {
 
+    public static final String EXTRA_MOUNTAIN_DATA = "mountainData";
     private RecyclerView hasData, noData;
     private List<String> hasList = new ArrayList<>(), noList = new ArrayList<>();
 
@@ -43,13 +49,13 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
     private Spinner spinner;
     private ArrayAdapter<String> spinnerAdapter;
 
-    private StorageAcquirer storageAcquirer;
     private SharedPreferences data;
 
     private String storagePath;
+    //データ記録中か
+    private boolean isAcquiring;
 
     private DBOpenHelper helper;
-    private List<MountainData> hasDataList = new ArrayList<>(), noDataList = new ArrayList<>();
 
     private String[] hasListItems, noListItems;
 
@@ -66,7 +72,11 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
 
         //ストレージパス取得
         storagePath = intent.getStringExtra(EXTRA_DATAPATH);
+        //データが記録中かを取得
+        isAcquiring = intent.getBooleanExtra(EXTRA_ACQUIRING, false);
 
+        //プリファレンス初期化
+        data = PreferenceManager.getDefaultSharedPreferences(this);
         //データベース読み込み
         helper = new DBOpenHelper(getApplicationContext());
 
@@ -150,11 +160,12 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
         hasData.setAdapter(mountainBrowseAdapter);
         noData.setAdapter(simpleMountainBrowseAdapter);
 
+        spinner = findViewById(R.id.prefSpinner);
+
         //アダプターをつける
         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, prefNameList);
         spinner.setAdapter(spinnerAdapter);
 
-        spinner = findViewById(R.id.prefSpinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, final long l) {
@@ -231,8 +242,8 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
                 }
 
                 //あるリストとないリストの山データを取得
-                hasDataList = helper.getMountainsFromIdStr(hasList);
-                noDataList = helper.getMountainsFromIdStr(noList);
+                final List<MountainData> hasDataList = helper.getMountainsFromIdStr(hasList);
+                final List<MountainData> noDataList = helper.getMountainsFromIdStr(noList);
 
                 handler.post(new Runnable() {
                     @Override
@@ -261,11 +272,22 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
                 });
             }
         }).start();
+
+        //データ取得中の場合、記録画面を起動
+        if(isAcquiring){
+            String mountainId = data.getString(getString(R.string.key_mountain_id), null);
+            if(mountainId != null){
+                MountainData mountainData = helper.getMountainFromIdStr(mountainId);
+                if(mountainData != null)
+                    startDataAcquisition(mountainData);
+            }
+        }
+
     }
 
-    //絶景の追加
+    //絶景写真の追加
     public void addImage(MountainData mountainData){
-        //絶景の追加画面を起動
+        //絶景写真の追加画面を起動
         startActivity(new Intent(BrowseActivity.this, AddImageActivity.class).putExtra(AddImageActivity.EX_MID, mountainData.getmId()));
     }
 
@@ -283,13 +305,13 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
     public void startDataAcquisition(MountainData mountainData){
 
         //取得する山データのIDを保存
-        data.edit().putString(getString(R.string.key_name), "" + mountainData.getmId()).apply();
+        data.edit().putString(getString(R.string.key_mountain_id), "" + mountainData.getmId()).apply();
 
-        //データ取得画面を起動
+        //データ記録画面を起動
         startActivity(
                 new Intent(BrowseActivity.this,
-                        DataAcquisitionActivity.class)
-                        .putExtra(EXTRA_MOUNTAIN_ID,"" + mountainData.getmId())
+                        DataRecordActivity.class)
+                        .putExtra(EXTRA_MOUNTAIN_DATA, mountainData)
                         .putExtra(EXTRA_DATAPATH, storagePath)
         );
     }
@@ -348,7 +370,7 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
             public void onDismissed(Snackbar transientBottomBar, int event) {
                 super.onDismissed(transientBottomBar, event);
 
-                //元に戻すボタンを押す以外の動作でバーが消えた時
+                //元に戻すボタンを押す以外の動作でバーが消えた場合
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     new Thread(new Runnable() {
                         @Override
@@ -372,13 +394,23 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
         }
     }
 
+    //データ記録サービスが起動中か
+    public boolean isServiceRunning(){
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (DataRecordService.class.getName().equals(serviceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //リストダイアログのアイテムが押された
     @Override
     public void onClick(final MountainData mountainData, String[] itemList, int which) {
         //0と1は各ダイアログ共通
         if(which <= 1) {
-            //ないリストからの選択の時、山データディレクトリを作成、表示リストを変更
+            //ないリストからの選択の場合、山データディレクトリを作成、表示リストを変更
             if(itemList == noListItems)
                 mkdirs(mountainData);
 
@@ -386,7 +418,7 @@ public class BrowseActivity extends AppCompatActivity implements ListDialogFragm
                 //登山記録を追加
                 startDataAcquisition(mountainData);
             }else {
-                //絶景を追加
+                //絶景写真を追加
                 addImage(mountainData);
             }
         }else if(which == 2) {
