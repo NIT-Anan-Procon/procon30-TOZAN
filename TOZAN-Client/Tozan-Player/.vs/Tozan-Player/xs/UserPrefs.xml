@@ -1,0 +1,35 @@
+﻿<Properties StartupConfiguration="{60A5ACE1-8A33-FB07-1073-1EA25EA95BFC}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TextManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/EventManager.cs" Line="19" Column="1" />
+      <File FileName="Assets/Scripts/ImageController.cs" />
+      <File FileName="Assets/Resources/Stages/11111111/meta.xml" />
+      <File FileName="Assets/Scripts/TextManager.cs" Line="26" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Tozan-Player" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Resources" expanded="True">
+                <Node name="Stages" expanded="True">
+                  <Node name="11111111" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Scripts" expanded="True">
+                <Node name="TextManager.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="9f33b409-489c-40b7-9cf7-4a8cc0eaca5c" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
