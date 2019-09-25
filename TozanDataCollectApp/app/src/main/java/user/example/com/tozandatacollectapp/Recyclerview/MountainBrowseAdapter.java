@@ -57,9 +57,9 @@ public class MountainBrowseAdapter extends RecyclerView.Adapter<MountainDataHold
         boolean hasSpecial = hasChild(sView);
 
         if(!hasSpecial){
-            holder.special.setText("絶景無し");
+            holder.special.setText("絶景写真無し");
         }else{
-            holder.special.setText(String.format("%s枚の絶景", Integer.toString(sView.list().length)));
+            holder.special.setText(String.format("%s枚の絶景写真", Integer.toString(sView.list().length)));
             new LoadPictureTask(holder.background, holder, position).execute(new File(sView, sView.list()[0]));
             holder.background.setImageBitmap(null);
         }
