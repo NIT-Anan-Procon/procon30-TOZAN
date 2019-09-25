@@ -32,7 +32,7 @@ public class DataUpdateDialogFragment extends DialogFragment {
         dialogBase = new DialogBase(getContext());
 
         dialogBase.setTitle(R.string.title_dialog_update);
-        dialogBase.setConfirmButtonText(R.string.ok);
+        dialogBase.setConfirmButtonText(R.string.confirm);
         dialogBase.setConfirmButtonVisibility(false);
         dialogBase.setOnConfirmButtonClickListener(new View.OnClickListener() {
             @Override
