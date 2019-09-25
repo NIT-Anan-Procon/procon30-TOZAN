@@ -53,6 +53,9 @@
                 android:layoutAnimation="@anim/layout_animation_fade_in"
                 android:orientation="horizontal"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:clipToPadding="false"
                 app:layout_constraintTop_toBottomOf="@id/divider"
                 tools:itemCount="3"
                 tools:listitem="@layout/listitem_browse" />
