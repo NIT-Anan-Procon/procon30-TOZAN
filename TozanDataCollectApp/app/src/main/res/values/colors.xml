@@ -5,9 +5,11 @@
     <color name="colorAccent">#ff8030</color>
 
     <color name="transparent">#00000000</color>
-    <color name="on">@color/colorAccent</color>
-    <color name="off">#676767</color>
+
+    <color name="not_recording">#676767</color>
+    <color name="startup">#e08030</color>
+    <color name="recording">#ff8030</color>
+    <color name="stopping">#e08067</color>
 
     <color name="colorTextLight">#f0f0e0</color>
-    <color name="button_bg">#808080</color>
 </resources>

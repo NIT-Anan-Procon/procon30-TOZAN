@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="key_storage">pref_key_storage</string>
-    <string name="key_name">pref_key_name</string>
-    <string name="key_quality">pref_key_photo_quality</string>
+    <string name="key_mountain_id">pref_key_name</string>
     <string name="key_acquiring">pref_key_data_acquiring</string>
 </resources>
