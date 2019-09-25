@@ -14,9 +14,6 @@
 #### App
 - フォントの追加用
 
-#### ControlWindow
--
-
 #### Designs.xaml
 - ResourceDictionary
 
@@ -40,9 +37,6 @@
 
 #### MainWindow
 - メインウィンドウ
-
-#### MenuPage
-- 
 
 #### PropertyWindow
 - デバッグ用プロパティウィンドウ
